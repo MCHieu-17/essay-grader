@@ -1,8 +1,8 @@
 <div align="center">
 
-<img src="assets/logo.png" alt="NEU-AES Logo" width="120"/>
+<img src="assets/logo.png" alt="ESSAY-GRADER" width="120"/>
 
-# NEU-AES · Automated Essay Scoring
+# ESSAY-GRADER · Automated Essay Scoring
 
 **Chấm điểm luận tiếng Anh tự động bằng AI — Nhanh · Chính xác · Nhất quán**
 
