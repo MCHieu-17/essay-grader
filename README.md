@@ -97,7 +97,7 @@ Chưa chấm ──▶ AI chấm ──▶ Đã duyệt
 
 ```bash
 git clone <repo-url>
-cd Production
+cd essay-grader
 
 pip install -r requirements.txt
 ```
