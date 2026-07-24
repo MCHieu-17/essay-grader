@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng nhập | NEU-AES</title>
+    <!-- Import font chữ Inter từ Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Import FontAwesome cho các icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* CSS Reset & Cơ bản */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /* Nền gradient chuyển động mang phong cách chuyên nghiệp */
+            background: linear-gradient(-45deg, #0a3a7a, #1a5db4, #002354, #12407c);
+            background-size: 400% 400%;
+            animation: gradientBG 12s ease infinite;
+            padding: 20px;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Container của form đăng nhập */
+        .login-container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 45px 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 420px;
+            backdrop-filter: blur(10px);
+            transform: translateY(0);
+            transition: all 0.3s ease;
+        }
+
+        .login-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Phần Header Logo/Tiêu đề */
+        .login-header {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .login-header .logo-icon {
+            font-size: 45px;
+            color: #1a5db4;
+            margin-bottom: 15px;
+        }
+
+        .login-header h1 {
+            color: #0a3a7a;
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
+        .login-header p {
+            color: #64748b;
+            font-size: 14px;
+            font-weight: 400;
+        }
+
+        /* Các ô nhập liệu */
+        .input-group {
+            position: relative;
+            margin-bottom: 25px;
+        }
+
+        .input-group i.icon-left {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+            font-size: 18px;
+            transition: color 0.3s ease;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 16px 20px 16px 50px;
+            font-size: 15px;
+            color: #334155;
+            background: #f8fafc;
+            border: 2px solid transparent;
+            border-radius: 12px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        /* Hiệu ứng khi focus vào ô nhập liệu */
+        .input-group input:focus {
+            background: #ffffff;
+            border-color: #1a5db4;
+            box-shadow: 0 0 0 4px rgba(26, 93, 180, 0.1);
+        }
+
+        .input-group input:focus + i.icon-left {
+            color: #1a5db4;
+        }
+
+        .input-group input::placeholder {
+            color: #94a3b8;
+        }
+
+        /* Icon mắt để hiện mật khẩu */
+        .toggle-password {
+            position: absolute;
+            right: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+            cursor: pointer;
+            font-size: 18px;
+            transition: color 0.3s ease;
+        }
+
+        .toggle-password:hover {
+            color: #475569;
+        }
+
+        /* Nút đăng nhập */
+        .login-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(to right, #0a3a7a, #1a5db4);
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .login-btn:hover {
+            background: linear-gradient(to right, #082d61, #13488f);
+            box-shadow: 0 8px 20px rgba(26, 93, 180, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .login-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Dòng chữ bản quyền */
+        .footer-text {
+            text-align: center;
+            margin-top: 25px;
+            font-size: 13px;
+            color: #94a3b8;
+        }
+
+        /* Animation cho spinner loading */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .fa-spinner {
+            animation: spin 1s linear infinite;
+            display: none; /* Ẩn mặc định */
+        }
+
+        /* Lỗi validation */
+        .error-message {
+            color: #ef4444;
+            font-size: 13px;
+            margin-top: -15px;
+            margin-bottom: 15px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-container">
+        <div class="login-header">
+            <i class="fas fa-graduation-cap logo-icon"></i>
+            <h1>NEU-AES</h1>
+            <p>Hệ thống chấm điểm tự động</p>
+        </div>
+
+        <form id="loginForm">
+            <!-- Tài khoản -->
+            <div class="input-group">
+                <input type="text" id="username" placeholder="Tài khoản hệ thống" required autocomplete="off">
+                <i class="fas fa-user icon-left"></i>
+            </div>
+
+            <!-- Mật khẩu -->
+            <div class="input-group">
+                <input type="password" id="password" placeholder="Mật khẩu" required>
+                <i class="fas fa-lock icon-left"></i>
+                <i class="fas fa-eye toggle-password" id="togglePasswordBtn" title="Hiển thị mật khẩu"></i>
+            </div>
+
+            <div id="errorMsg" class="error-message">Vui lòng điền đầy đủ thông tin!</div>
+
+            <!-- Nút submit -->
+            <button type="submit" class="login-btn" id="loginBtn">
+                <i class="fas fa-spinner" id="loadingSpinner"></i>
+                <span id="btnText">Đăng nhập</span>
+            </button>
+        </form>
+
+        <p class="footer-text">© 2024 NEU-AES. All rights reserved.</p>
+    </div>
+
+    <script>
+        // Xử lý sự kiện Ẩn/Hiện mật khẩu
+        const togglePasswordBtn = document.getElementById('togglePasswordBtn');
+        const passwordInput = document.getElementById('password');
+
+        togglePasswordBtn.addEventListener('click', function () {
+            // Thay đổi type của input
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            
+            // Đổi icon mắt
+            if(type === 'text') {
+                this.classList.remove('fa-eye');
+                this.classList.add('fa-eye-slash');
+            } else {
+                this.classList.remove('fa-eye-slash');
+                this.classList.add('fa-eye');
+            }
+        });
+
+        // Xử lý sự kiện khi ấn Đăng nhập
+        const loginForm = document.getElementById('loginForm');
+        const errorMsg = document.getElementById('errorMsg');
+
+        loginForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const username = document.getElementById('username').value.trim();
+            const password = passwordInput.value.trim();
+
+            if (!username || !password) {
+                errorMsg.textContent = 'Vui lòng điền đầy đủ thông tin!';
+                errorMsg.style.display = 'block';
+                return;
+            }
+
+            errorMsg.style.display = 'none';
+            setLoading(true);
+
+            try {
+                const formData = new URLSearchParams();
+                formData.append('grant_type', 'password');
+                formData.append('username', username);
+                formData.append('password', password);
+
+                const res = await fetch('/auth/token', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: formData.toString(),
+                });
+
+                const data = await res.json();
+
+                if (!res.ok) {
+                    throw new Error(data.detail || 'Sai tài khoản hoặc mật khẩu');
+                }
+
+                localStorage.setItem('access_token', data.access_token);
+                localStorage.setItem('token_type', data.token_type);
+                window.location.href = '/dashboard';
+            } catch (err) {
+                errorMsg.textContent = err.message;
+                errorMsg.style.display = 'block';
+            } finally {
+                setLoading(false);
+            }
+        });
+
+        function setLoading(loading) {
+            const btn = document.getElementById('loginBtn');
+            btn.style.pointerEvents = loading ? 'none' : 'auto';
+            document.getElementById('btnText').innerText = loading ? 'Đang xử lý...' : 'Đăng nhập';
+            document.getElementById('loadingSpinner').style.display = loading ? 'inline-block' : 'none';
+        }
+    </script>
+</body>
+</html>

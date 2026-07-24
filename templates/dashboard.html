@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard | NEU-AES</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+  :root{
+    --primary:#2f6fb0;
+    --primary-dark:#1f4e7a;
+    --primary-light:#eaf3fc;
+    --primary-lighter:#f5f9fd;
+    --bg:#eef4fa;
+    --card:#ffffff;
+    --border:#e2ebf4;
+    --text:#1e2b3d;
+    --text-muted:#72879c;
+    --success-bg:#e3f6ea; --success-text:#1f7a4d;
+    --warning-bg:#fef3dc; --warning-text:#b0730b;
+    --danger-bg:#fdeaea;  --danger-text:#c23b3b;
+    --gray-bg:#eef2f7;    --gray-text:#64748b;
+    --shadow: 0 1px 2px rgba(30,64,110,0.04), 0 8px 24px -12px rgba(30,64,110,0.12);
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    font-family:'Inter',sans-serif;
+    background:
+      radial-gradient(1000px 500px at 100% -10%, #e4f0fb 0%, transparent 60%),
+      radial-gradient(800px 400px at -5% 10%, #eef6fd 0%, transparent 55%),
+      var(--bg);
+    color:var(--text);
+    margin:0;
+    min-height:100vh;
+  }
+  h1,h2,h3,.brand{ font-family:'Sora',sans-serif; }
+
+  /* ---------- Navbar ---------- */
+  nav{
+    background:rgba(255,255,255,0.85);
+    backdrop-filter:blur(10px);
+    padding:16px 40px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    border-bottom:1px solid var(--border);
+    position:sticky; top:0; z-index:20;
+  }
+  .brand{ display:flex; align-items:center; gap:10px; }
+  .brand-mark{
+    width:36px; height:36px; border-radius:10px;
+    background:linear-gradient(135deg,#4a8fd6,#1f4e7a);
+    display:flex; align-items:center; justify-content:center;
+    color:#fff; font-size:15px; box-shadow:var(--shadow);
+  }
+  .brand-name{ font-weight:700; color:var(--primary-dark); font-size:18px; letter-spacing:.2px; }
+  .brand-sub{ font-size:11px; color:var(--text-muted); font-weight:500; margin-top:-2px; }
+
+  .nav-user{ display:flex; align-items:center; gap:14px; font-size:14px; }
+  .nav-user .avatar{
+    width:34px; height:34px; border-radius:50%;
+    background:var(--primary-light); color:var(--primary-dark);
+    display:flex; align-items:center; justify-content:center;
+    font-weight:700; font-size:13px; border:1px solid var(--border);
+  }
+  .nav-user a{ color:var(--text-muted); text-decoration:none; font-weight:500; transition:color .15s; }
+  .nav-user a:hover{ color:var(--danger-text); }
+  .nav-user a i{ margin-right:5px; }
+
+  /* ---------- Layout ---------- */
+  .container{ padding:34px 40px 60px; max-width:1240px; margin:auto; }
+
+  .page-head{ display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:26px; flex-wrap:wrap; gap:16px; }
+  .page-head h1{ font-size:24px; margin:0 0 4px; color:var(--text); }
+  .page-head p{ margin:0; color:var(--text-muted); font-size:14px; }
+
+  .btn{ border:none; border-radius:10px; font-weight:600; font-family:'Inter',sans-serif; cursor:pointer; transition:.15s ease; display:inline-flex; align-items:center; gap:8px; }
+  .btn-primary{ background:var(--primary); color:#fff; padding:12px 22px; font-size:14px; box-shadow:0 6px 16px -6px rgba(47,111,176,0.55); }
+  .btn-primary:hover{ background:var(--primary-dark); transform:translateY(-1px); }
+  .btn-primary:disabled{ background:#a7c2dc; cursor:not-allowed; transform:none; box-shadow:none; }
+  .btn-ghost{ background:var(--card); color:var(--text); border:1px solid var(--border); padding:10px 16px; font-size:13.5px; }
+  .btn-ghost:hover{ border-color:var(--primary); color:var(--primary-dark); }
+  .btn-sm{ padding:8px 14px; font-size:13px; border-radius:8px; }
+
+  /* ---------- Stat cards ---------- */
+  .stats-grid{ display:grid; grid-template-columns:1.4fr 1fr 1fr; gap:16px; margin-bottom:26px; }
+  .stat-card{
+    background:var(--card); border:1px solid var(--border); border-radius:16px;
+    padding:20px 22px; box-shadow:var(--shadow); position:relative; overflow:hidden;
+  }
+  .stat-card .label{ font-size:12.5px; color:var(--text-muted); font-weight:600; text-transform:uppercase; letter-spacing:.5px; }
+  .stat-card .value{ font-size:28px; font-weight:700; margin-top:6px; color:var(--text); font-family:'Sora',sans-serif; }
+  .stat-card .value span{ font-size:15px; color:var(--text-muted); font-weight:600; }
+  .stat-icon{ position:absolute; right:16px; top:16px; width:34px; height:34px; border-radius:9px; display:flex; align-items:center; justify-content:center; font-size:14px; }
+
+  .stat-hero{ display:flex; align-items:center; gap:22px; }
+  .ring-wrap{ position:relative; width:78px; height:78px; flex-shrink:0; }
+  .ring-wrap svg{ transform:rotate(-90deg); }
+  .ring-bg{ fill:none; stroke:var(--gray-bg); stroke-width:8; }
+  .ring-fg{ fill:none; stroke:url(#ringGrad); stroke-width:8; stroke-linecap:round; transition:stroke-dashoffset 1s ease; }
+  .ring-pct{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:15px; color:var(--primary-dark); font-family:'Sora',sans-serif; }
+
+  .stat-icon.blue{ background:var(--primary-light); color:var(--primary); }
+  .stat-icon.green{ background:var(--success-bg); color:var(--success-text); }
+
+  /* ---------- Toolbar ---------- */
+  .toolbar{ display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:14px; }
+  .tabs{ display:flex; gap:6px; background:var(--card); padding:5px; border-radius:11px; border:1px solid var(--border); }
+  .tab{ padding:8px 16px; border-radius:8px; font-size:13.5px; font-weight:600; color:var(--text-muted); cursor:pointer; transition:.15s; }
+  .tab.active{ background:var(--primary-light); color:var(--primary-dark); }
+  .search-box{ display:flex; align-items:center; gap:8px; background:var(--card); border:1px solid var(--border); border-radius:10px; padding:9px 14px; font-size:13.5px; color:var(--text-muted); min-width:230px; }
+  .search-box input{ border:none; outline:none; font-family:'Inter',sans-serif; font-size:13.5px; width:100%; background:transparent; color:var(--text); }
+
+  /* ---------- Table ---------- */
+  .table-card{ background:var(--card); border:1px solid var(--border); border-radius:16px; box-shadow:var(--shadow); overflow:hidden; }
+  table{ width:100%; border-collapse:collapse; }
+  th{ background:var(--primary-lighter); text-align:left; padding:14px 18px; color:var(--text-muted); font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:.4px; border-bottom:1px solid var(--border); }
+  td{ padding:14px 18px; border-top:1px solid var(--border); font-size:14px; vertical-align:middle; }
+  tbody tr{ transition:background .12s; }
+  tbody tr:hover{ background:var(--primary-lighter); }
+
+  .student-cell{ display:flex; align-items:center; gap:12px; }
+  .student-avatar{ width:36px; height:36px; border-radius:50%; background:var(--primary-light); color:var(--primary-dark); display:flex; align-items:center; justify-content:center; font-weight:700; font-size:13px; flex-shrink:0; }
+  .student-name{ font-weight:600; color:var(--text); }
+  .student-id{ font-size:12px; color:var(--text-muted); }
+
+  .file-link{ color:var(--primary); text-decoration:none; font-weight:600; font-size:13.5px; display:inline-flex; align-items:center; gap:6px; }
+  .file-link:hover{ text-decoration:underline; }
+  .file-link i{ color:#e05252; }
+
+  .badge{ padding:6px 13px; border-radius:20px; font-size:12px; font-weight:700; display:inline-flex; align-items:center; gap:6px; }
+  .badge::before{ content:''; width:6px; height:6px; border-radius:50%; background:currentColor; }
+  .bg-gray{ background:var(--gray-bg); color:var(--gray-text); }
+  .bg-green{ background:var(--success-bg); color:var(--success-text); }
+  .bg-blue{ background:var(--primary-light); color:var(--primary-dark); }
+
+  .score{ font-weight:700; font-family:'Sora',sans-serif; color:var(--text); }
+  .score.pending{ color:var(--text-muted); font-weight:500; font-family:'Inter',sans-serif; }
+
+  .btn-grade{ background:var(--primary-light); color:var(--primary-dark); border:1px solid #cfe2f5; }
+  .btn-grade:hover{ background:var(--primary); color:#fff; }
+  .btn-view{ background:var(--card); color:var(--text-muted); border:1px solid var(--border); }
+  .btn-view:hover{ color:var(--primary-dark); border-color:var(--primary); }
+
+  .table-foot{ display:flex; justify-content:space-between; align-items:center; padding:14px 18px; font-size:13px; color:var(--text-muted); border-top:1px solid var(--border); background:var(--primary-lighter); }
+
+  .pagination{ display:flex; align-items:center; gap:4px; }
+  .pagination button{
+    border:1px solid var(--border); background:var(--card); color:var(--text);
+    border-radius:7px; padding:6px 11px; font-size:12.5px; font-weight:600;
+    cursor:pointer; transition:.12s; font-family:'Inter',sans-serif; min-width:34px;
+  }
+  .pagination button:hover{ border-color:var(--primary); color:var(--primary-dark); }
+  .pagination button.active{ background:var(--primary); color:#fff; border-color:var(--primary); }
+  .pagination button:disabled{ opacity:.4; cursor:not-allowed; }
+  .pagination .dots{ padding:0 4px; color:var(--text-muted); }
+
+  @media(max-width:900px){
+    .stats-grid{ grid-template-columns:1fr 1fr; }
+    .container{ padding:24px 16px 40px; }
+    nav{ padding:14px 18px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="brand">
+    <div class="brand-mark"><i class="fa-solid fa-graduation-cap"></i></div>
+    <div>
+      <div class="brand-name">NEU-AES</div>
+      <div class="brand-sub">Hệ thống chấm điểm tự động</div>
+    </div>
+  </div>
+  <div class="nav-user">
+    <div class="avatar" id="navAvatar">..</div>
+    <div>
+      <div style="font-weight:600;" id="navTeacher">GV. ...</div>
+    </div>
+    <a href="#" onclick="logout()"><i class="fa-solid fa-arrow-right-from-bracket"></i>Đăng xuất</a>
+  </div>
+</nav>
+
+<div class="container">
+
+  <div class="stats-grid">
+    <div class="stat-card stat-hero">
+      <div class="ring-wrap">
+        <svg width="78" height="78" viewBox="0 0 78 78">
+          <defs>
+            <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#4a8fd6"/>
+              <stop offset="100%" stop-color="#1f4e7a"/>
+            </linearGradient>
+          </defs>
+          <circle class="ring-bg" cx="39" cy="39" r="33"/>
+          <circle class="ring-fg" id="progressRing" cx="39" cy="39" r="33" stroke-dasharray="207.3" stroke-dashoffset="66.3"/>
+        </svg>
+        <div class="ring-pct" id="ringPct">0%</div>
+      </div>
+      <div>
+        <div class="label">Tiến độ chấm</div>
+        <div class="value"><span id="scoredCount">0</span><span> / <span id="totalCount">0</span> bài</span></div>
+        <div style="font-size:12.5px;color:var(--text-muted);margin-top:2px;">Còn <span id="unscoredCount">0</span> bài chưa chấm</div>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon green"><i class="fa-solid fa-circle-check"></i></div>
+      <div class="label">Đã chấm</div>
+      <div class="value" id="scoredStat">0</div>
+      <div style="font-size:12.5px;color:var(--success-text);margin-top:4px;" id="avgScoreLine">Điểm TB —</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon blue"><i class="fa-solid fa-file-circle-question"></i></div>
+      <div class="label">Chưa chấm</div>
+      <div class="value" id="unscoredStat">0</div>
+    </div>
+  </div>
+
+  <div class="toolbar">
+    <div class="tabs">
+      <div class="tab active" data-filter="all" onclick="switchTab('all', this)">Tất cả (<span id="tabAll">0</span>)</div>
+      <div class="tab" data-filter="unscored" onclick="switchTab('unscored', this)">Chưa chấm (<span id="tabUnscored">0</span>)</div>
+      <div class="tab" data-filter="scored" onclick="switchTab('scored', this)">Đã chấm (<span id="tabScored">0</span>)</div>
+    </div>
+    <div style="display:flex; align-items:center; gap:10px;">
+      <div class="search-box">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" id="searchInput" placeholder="Tìm học sinh, mã số..." oninput="debounceSearch()">
+      </div>
+      <button class="btn btn-primary" id="batchBtn" onclick="startBatch()">
+        <i class="fa-solid fa-bolt"></i> Chấm hàng loạt
+      </button>
+    </div>
+  </div>
+
+  <div class="table-card">
+    <table>
+      <thead>
+        <tr>
+          <th style="width:50px;">STT</th>
+          <th>Học sinh</th>
+          <th>Bài làm</th>
+          <th>Trạng thái</th>
+          <th>Điểm</th>
+          <th style="text-align:right;">Thao tác</th>
+        </tr>
+      </thead>
+      <tbody id="studentTable">
+      </tbody>
+    </table>
+    <div class="table-foot">
+      <span id="tableInfo">Đang tải...</span>
+      <div class="pagination" id="pagination"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const RING_CIRCUMFERENCE = 207.3;
+  const PER_PAGE = 15;
+
+  let currentFilter = 'all';
+  let currentPage = 1;
+  let searchTimer = null;
+  let scoringIds = new Set();
+
+  function getToken() {
+    return localStorage.getItem('access_token');
+  }
+
+  async function api(path, options = {}) {
+    const token = getToken();
+    if (!token) {
+      window.location.href = '/login';
+      return;
+    }
+    const res = await fetch(path, {
+      ...options,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+        ...(options.headers || {}),
+      },
+    });
+    if (res.status === 401) {
+      localStorage.removeItem('access_token');
+      window.location.href = '/login';
+      return;
+    }
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({ detail: 'Lỗi không xác định' }));
+      throw new Error(err.detail || 'Lỗi không xác định');
+    }
+    return res.json();
+  }
+
+  function decodeToken(token) {
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      return payload;
+    } catch {
+      return null;
+    }
+  }
+
+  function logout() {
+    localStorage.removeItem('access_token');
+    window.location.href = '/login';
+  }
+
+  async function initUser() {
+    try {
+      const me = await api('/api/me');
+      document.getElementById('navTeacher').textContent = 'GV. ' + me.name;
+      const initials = me.name.split(' ').map(w => w[0]?.toUpperCase() || '').join('').slice(0, 2);
+      document.getElementById('navAvatar').textContent = initials || 'GV';
+    } catch {
+      const token = getToken();
+      if (!token) return;
+      const payload = decodeToken(token);
+      const name = (payload && payload.username) || 'GV';
+      document.getElementById('navTeacher').textContent = 'GV. ' + name;
+    }
+  }
+
+  function updateStats(stats) {
+    const scoredTotal = stats.ai_scored + stats.reviewed;
+    document.getElementById('scoredCount').textContent = scoredTotal;
+    document.getElementById('totalCount').textContent = stats.total;
+    document.getElementById('unscoredCount').textContent = stats.unscored;
+    document.getElementById('scoredStat').textContent = scoredTotal;
+    document.getElementById('unscoredStat').textContent = stats.unscored;
+
+    const pct = stats.total > 0 ? Math.round((scoredTotal / stats.total) * 100) : 0;
+    document.getElementById('ringPct').textContent = pct + '%';
+    const offset = RING_CIRCUMFERENCE - (pct / 100) * RING_CIRCUMFERENCE;
+    document.getElementById('progressRing').style.strokeDashoffset = offset;
+
+    document.getElementById('tabAll').textContent = stats.total;
+    document.getElementById('tabScored').textContent = scoredTotal;
+    document.getElementById('tabUnscored').textContent = stats.unscored;
+
+    if (stats.avg_score != null) {
+      document.getElementById('avgScoreLine').innerHTML = `<i class="fa-solid fa-arrow-up" style="font-size:10px;"></i> Điểm TB ${stats.avg_score}`;
+    } else {
+      document.getElementById('avgScoreLine').textContent = 'Điểm TB —';
+    }
+  }
+
+  function renderTable(essays) {
+    const tbody = document.getElementById('studentTable');
+    if (essays.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:var(--text-muted);padding:40px;">Không có bài luận nào</td></tr>`;
+      return;
+    }
+    tbody.innerHTML = essays.map((e, i) => {
+      const stt = (currentPage - 1) * PER_PAGE + i + 1;
+      const initials = e.student_name.split(' ').map(w => w[0]?.toUpperCase() || '').join('').slice(0, 2);
+      const isScored = e.status !== 'unscored';
+      const statusBadge = e.status === 'reviewed'
+        ? '<span class="badge bg-green">Đã duyệt</span>'
+        : e.status === 'ai_scored'
+          ? '<span class="badge bg-blue">AI chấm</span>'
+          : '<span class="badge bg-gray">Chưa chấm</span>';
+      const scoreHtml = isScored
+        ? `<span class="score">${e.total != null ? e.total.toFixed(1) : '—'}</span>`
+        : '<span class="score pending">—</span>';
+      const actionHtml = isScored
+        ? `<button class="btn btn-sm btn-view" onclick="viewDetail(${e.id})">Xem lại</button>`
+        : (scoringIds.has(e.id)
+          ? `<button class="btn btn-sm btn-grade" disabled><i class="fa-solid fa-spinner fa-spin"></i> Đang chấm</button>`
+          : `<button class="btn btn-sm btn-grade" id="gradeBtn${e.id}" onclick="scoreOne(${e.id})">Chấm ngay</button>`);
+      return `
+        <tr>
+          <td>${stt}</td>
+          <td>
+            <div class="student-cell">
+              <div class="student-avatar">${initials}</div>
+              <div>
+                <div class="student-name">${e.student_name}</div>
+                <div class="student-id">MSSV: ${e.student_id}</div>
+              </div>
+            </div>
+          </td>
+          <td><a href="#" class="file-link" onclick="event.preventDefault(); viewDetail(${e.id})"><i class="fa-solid fa-file-pdf"></i> Xem bài</a></td>
+          <td>${statusBadge}</td>
+          <td>${scoreHtml}</td>
+          <td style="text-align:right;">${actionHtml}</td>
+        </tr>`;
+    }).join('');
+  }
+
+  function updatePagination(total, page, perPage, totalPages) {
+    const start = total > 0 ? (page - 1) * perPage + 1 : 0;
+    const end = Math.min(page * perPage, total);
+    document.getElementById('tableInfo').textContent = `Hiển thị ${start} — ${end} trên ${total} bài`;
+
+    const pag = document.getElementById('pagination');
+    if (totalPages <= 1) { pag.innerHTML = ''; return; }
+
+    let html = '';
+    html += `<button ${page <= 1 ? 'disabled' : ''} onclick="goToPage(${page - 1})"><i class="fa-solid fa-chevron-left"></i></button>`;
+
+    const maxButtons = 5;
+    let startPage, endPage;
+    if (totalPages <= maxButtons) {
+      startPage = 1; endPage = totalPages;
+    } else {
+      const half = Math.floor(maxButtons / 2);
+      startPage = Math.max(1, page - half);
+      endPage = Math.min(totalPages, startPage + maxButtons - 1);
+      if (endPage - startPage < maxButtons - 1) startPage = Math.max(1, endPage - maxButtons + 1);
+    }
+
+    if (startPage > 1) { html += `<span class="dots">...</span>`; }
+
+    for (let i = startPage; i <= endPage; i++) {
+      html += `<button class="${i === page ? 'active' : ''}" onclick="goToPage(${i})">${i}</button>`;
+    }
+
+    if (endPage < totalPages) { html += `<span class="dots">...</span>`; }
+
+    html += `<button ${page >= totalPages ? 'disabled' : ''} onclick="goToPage(${page + 1})"><i class="fa-solid fa-chevron-right"></i></button>`;
+
+    pag.innerHTML = html;
+  }
+
+  function goToPage(p) {
+    currentPage = p;
+    loadDashboard();
+    document.querySelector('.table-card').scrollIntoView({ behavior: 'smooth' });
+  }
+
+  async function loadDashboard() {
+    try {
+      const params = new URLSearchParams({
+        status: currentFilter,
+        page: currentPage,
+        per_page: PER_PAGE,
+      });
+      const q = document.getElementById('searchInput').value.trim();
+      if (q) params.set('search', q);
+
+      const data = await api(`/api/dashboard?${params}`);
+      updateStats(data.stats);
+      renderTable(data.essays.items);
+      updatePagination(data.essays.total, data.essays.page, data.essays.per_page, data.essays.total_pages);
+    } catch (err) {
+      document.getElementById('studentTable').innerHTML = `<tr><td colspan="6" style="text-align:center;color:var(--danger-text);padding:40px;">Lỗi: ${err.message}</td></tr>`;
+    }
+  }
+
+  function switchTab(filter, el) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+    currentFilter = filter;
+    currentPage = 1;
+    loadDashboard();
+  }
+
+  function debounceSearch() {
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(() => {
+      currentPage = 1;
+      loadDashboard();
+    }, 300);
+  }
+
+  function viewDetail(id) {
+    window.location.href = `/detail/${id}`;
+  }
+
+  async function scoreOne(essayId) {
+    scoringIds.add(essayId);
+    loadDashboard();
+    try {
+      const detail = await api(`/api/essays/${essayId}`);
+      await api('/score_one', {
+        method: 'POST',
+        body: JSON.stringify({
+          id: essayId,
+          prompt: detail.prompt,
+          essay: detail.essay,
+        }),
+      });
+    } catch (err) {
+      alert('Lỗi khi chấm bài: ' + err.message);
+    } finally {
+      scoringIds.delete(essayId);
+      loadDashboard();
+    }
+  }
+
+  async function startBatch() {
+    const btn = document.getElementById('batchBtn');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang xử lý...';
+    try {
+      const data = await api(`/api/dashboard?status=unscored&per_page=100`);
+      const essays = data.essays.items;
+      if (essays.length === 0) {
+        alert('Không còn bài nào chưa chấm.');
+        return;
+      }
+      const detailPromises = essays.map(e => api(`/api/essays/${e.id}`));
+      const details = await Promise.all(detailPromises);
+      await api('/score_all', {
+        method: 'POST',
+        body: JSON.stringify({
+          ids: details.map(d => d.id),
+          prompts: details.map(d => d.prompt),
+          essays: details.map(d => d.essay),
+        }),
+      });
+      loadDashboard();
+    } catch (err) {
+      alert('Lỗi khi chấm hàng loạt: ' + err.message);
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fa-solid fa-bolt"></i> Chấm hàng loạt';
+    }
+  }
+
+  initUser();
+  loadDashboard();
+</script>
+</body>
+</html>
