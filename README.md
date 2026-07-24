@@ -99,20 +99,19 @@ Chưa chấm ──▶ AI chấm ──▶ Đã duyệt
 git clone <repo-url>
 cd essay-grader
 
+conda create -n test python=3.11 -y
 pip install -r requirements.txt
 ```
 
 ### 3. (Tùy chọn) Cấu hình môi trường
 
-Tạo file `.env` từ mẫu (không bắt buộc — đã có mặc định):
+Tạo file `.env`:
 
 ```env
 SECRET_KEY="your-secret-key-here"
 ALGORITHM="HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES=30
 ```
-
-Cơ sở dữ liệu `data/app.db` đã được seed sẵn với dữ liệu mẫu.
 
 Tài khoản demo:
 
