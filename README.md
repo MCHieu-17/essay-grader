@@ -6,9 +6,9 @@
 
 **Chấm điểm luận tiếng Anh tự động bằng AI — Nhanh · Chính xác · Nhất quán**
 
-[![Python](https://img.shields.io/badge/Python-3.12+-blue.svg)](https://python.org)
-[![FastAPI](https://img.shields.io/badge/FastAPI-0.115+-009688.svg)](https://fastapi.tiangolo.com)
-[![PyTorch](https://img.shields.io/badge/PyTorch-2.12-EE4C2C.svg)](https://pytorch.org)
+[![Python](https://img.shields.io/badge/Python-3.11.15+-blue.svg)](https://python.org)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.139.2+-009688.svg)](https://fastapi.tiangolo.com)
+[![PyTorch](https://img.shields.io/badge/PyTorch-2.8.0+-EE4C2C.svg)](https://pytorch.org)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 </div>
@@ -88,10 +88,10 @@ Chưa chấm ──▶ AI chấm ──▶ Đã duyệt
 
 ### Yêu cầu hệ thống
 
-- **Python** 3.12+
-- **CUDA** 13.0+ (nếu dùng GPU) hoặc CPU
+- **Python** 3.11.15+
+- **CUDA** 12.6+ (nếu dùng GPU) hoặc CPU
 - **RAM** ≥ 16GB (cho mô hình 4B tham số)
-- **VRAM** ≥ 8GB (khuyến nghị 12GB)
+- **VRAM** khuyến nghị 12GB
 
 ### 1. Clone & cài đặt dependencies
 
@@ -141,7 +141,7 @@ Production/
 │   └── routers/
 │       └── auth.py        # Xác thực JWT
 ├── data/
-│   ├── app.db              # SQLite database (đã seed sẵn)
+│   ├── app.db              # SQLite database
 │   ├── database.py         # Kết nối SQLite
 │   └── model.py            # ORM models
 ├── templates/
@@ -150,7 +150,7 @@ Production/
 │   └── detail.html
 ├── weights/
 │   └── judge.ubj          # Trọng số XGBoost Judge
-├── assets/                # ← Chèn ảnh chụp màn hình vào đây
+├── assets/              
 ├── .env
 ├── requirements.txt
 └── README.md
