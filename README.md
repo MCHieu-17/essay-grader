@@ -104,7 +104,7 @@ conda activate venv
 pip install -r requirements.txt
 ```
 
-### 3. (Tùy chọn) Cấu hình môi trường
+### 3. Cấu hình môi trường
 
 Tạo file `.env`:
 
